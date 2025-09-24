@@ -21,5 +21,6 @@ WORKDIR /app
 # multi-stage build: copia os binários necessários para a aplicação rodar na nova imagem aspnet
 COPY --from=build /app/publish .
 
+
 EXPOSE 5000
 ENTRYPOINT ["dotnet", "costumersApi.dll"]
