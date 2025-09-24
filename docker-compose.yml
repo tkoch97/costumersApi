@@ -1,0 +1,37 @@
+services:
+
+  db:
+    image: postgres:16
+    container_name: costumersapi-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: senha123
+      POSTGRES_DB: costumersdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: costumers-redis
+    ports:
+      - "6379:6379"
+
+  api:
+    build: .
+    container_name: costumers-api
+    ports:
+      - "5000:8080" #Porta para acessar o container
+    depends_on:
+      - db
+      - redis
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=costumersdb;Username=postgres;Password=senha123"
+    # Permite esperar os serviços estarem prontos
+    command: >
+      sh -c "./wait-for.sh db dotnet costumersApi.dll"
+
+volumes:
+  pgdata: 
+  #volume não precisa ter valor, Doicker cria automaticamente e armazena os dados em /var/lib/docker/volumes/...

@@ -11,7 +11,7 @@ namespace costumersApi.Validators
       .NotEmpty().WithMessage("Nome é obrigatório. Por favor, informe.");
 
       RuleFor(costumer => costumer.Email)
-      .NotEmpty().EmailAddress().WithMessage("Insira um endereço de email válido.");
+      .NotEmpty().WithMessage("Email é obrigatório. Por favor, informe.").EmailAddress().WithMessage("Insira um endereço de email válido.");
     }
   }
 }
